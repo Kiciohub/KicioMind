@@ -37,11 +37,10 @@ class Game:
 def import_data():
     new_game_gui = tk.Tk()
     new_game_gui.title('Master Mind by Kicia')
-    background = tk.Canvas(new_game_gui, width=40, height=60)
-    background.pack()
-    # tk.Label(new_game_gui, text='Długość sekwencji:').grid(row=0)
-    # tk.Label(new_game_gui, text='Liczba symboli:').grid(row=1)
-    # tk.Label(new_game_gui, text='Liczba tur:').grid(row=2)
+    tk.Canvas(new_game_gui, width=40, height=60)
+    tk.Label(new_game_gui, text='Długość sekwencji:').grid(row=0)
+    tk.Label(new_game_gui, text='Liczba symboli:').grid(row=1)
+    tk.Label(new_game_gui, text='Liczba tur:').grid(row=2)
     sequence_length = tk.Entry(new_game_gui)
     symbols_quantity = tk.Entry(new_game_gui)
     round_number = tk.Entry(new_game_gui)
@@ -86,7 +85,7 @@ def run_gui():
 
 if __name__ == '__main__':
     run_gui()
-
+    # baskfhkasfh
     # this_game_sequence_length, this_game_symbols_quantity = import_data()
     # this_game = Game(this_game_sequence_length, this_game_symbols_quantity)
     # # print("Correct sequence:" + str(this_game.sequence))
