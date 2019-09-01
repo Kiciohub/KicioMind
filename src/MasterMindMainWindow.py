@@ -77,28 +77,41 @@ class NewGameDialog(QDialog):
     def __init__(self, main_window):
         super(NewGameDialog, self).__init__()
         loadUi(r"../layouts/master_mind_new_game.ui", self)
+        self.all_good_flag = False
+
         self.main_window = main_window
+
         self.start_game_button.clicked.connect(self.start_game_handler)
 
     def start_game_handler(self):
-        try:
+        if self.all_good_flag:
             a = int(self.sequence_length_lineEdit.text())
             b = int(self.symbols_quantity_lineEdit.text())
             c = int(self.round_number_lineEdit.text())
 
-            if a > 0 and b > 0 and c > 0:
-                pass
+            self.main_window.generate_buttons(b)
+            self.main_window.actual_game = GameProcess.Game(a, b, c)
+            self.hide()
+
+    def paintEvent(self, e):
+        field1, field2, field3 = self.sequence_length_lineEdit.text(), self.symbols_quantity_lineEdit.text(), self.round_number_lineEdit.text()
+        self.label_4.setText("<font color=green> ALL GOOD <font>")
+
+        try:
+            field1 = int(field1)
+            field2 = int(field2)
+            field3 = int(field3)
+
+            if field1 > 0 and field2 > 0 and field3 > 0:
+                self.all_good_flag = True
             else:
-                pass  # Print error
-        except ValueError:
-            pass
+                self.label_4.setText("<font color=red> All fields must be greater that zero <font>")
 
-        self.main_window.generateButtons(b)
-        self.main_window.actual_game = GameProcess.Game(a, b, c)
-        self.hide()
+        except:
+            self.label_4.setText("<font color=red> All fields must be ints <font>")
 
-    def keyPressEvent(self, QKeyEvent):
-        if QKeyEvent.key() in [Qt.Key_Enter, Qt.Key_Return]:
+    def keyPressEvent(self, e):
+        if e.key() in [Qt.Key_Enter, Qt.Key_Return]:
             self.start_game_handler()
 
 
