@@ -39,7 +39,7 @@ class MainWindow(QMainWindow):
             if i % 3 == 0:
                 row += 1
             button = QPushButton(str(i + 1))
-            self.gridLayout.addWidget(button, row, i % 5)
+            self.gridLayout.addWidget(button, row, i % 3)
             button.clicked.connect(self.buttonHandlerFactory(i + 1))
 
     def player_input_send_button_handler(self):
