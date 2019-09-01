@@ -1,3 +1,5 @@
+import os
+
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
@@ -9,7 +11,7 @@ from src import GameProcess
 class MainWindow(QMainWindow):
     def __init__(self):
         super(MainWindow, self).__init__()
-        loadUi(r"master_mind_main_gui.ui", self)
+        loadUi(os.path.join(os.getcwd(), "../layouts/master_mind_main_gui.ui"), self)
         self.dialog_input = None
 
         self.actual_game = None
@@ -41,6 +43,9 @@ class MainWindow(QMainWindow):
 
     def player_input_send_button_handler(self):
         player_input = self.player_input.text()
+        if player_input[-1] == ",":
+            player_input = player_input[:-1]
+
         result = self.actual_game.single_player_input(player_input)
 
         new_variable = f"{player_input} {result}"
@@ -59,7 +64,7 @@ class MainWindow(QMainWindow):
 class NewGameDialog(QDialog):
     def __init__(self, main_window):
         super(NewGameDialog, self).__init__()
-        loadUi(r"master_mind_new_game.ui", self)
+        loadUi(r"../layouts/master_mind_new_game.ui", self)
         self.main_window = main_window
         self.start_game_button.clicked.connect(self.start_game_handler)
 
