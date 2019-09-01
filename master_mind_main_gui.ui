@@ -17,16 +17,7 @@
    <layout class="QVBoxLayout" name="verticalLayout_2">
     <item>
      <layout class="QVBoxLayout" name="verticalLayout">
-      <property name="leftMargin">
-       <number>10</number>
-      </property>
-      <property name="topMargin">
-       <number>10</number>
-      </property>
-      <property name="rightMargin">
-       <number>10</number>
-      </property>
-      <property name="bottomMargin">
+      <property name="margin">
        <number>10</number>
       </property>
       <item>
@@ -39,8 +30,8 @@
           <rect>
            <x>0</x>
            <y>0</y>
-           <width>286</width>
-           <height>125</height>
+           <width>280</width>
+           <height>143</height>
           </rect>
          </property>
          <layout class="QVBoxLayout" name="verticalLayout_4">
@@ -100,28 +91,15 @@
           <rect>
            <x>0</x>
            <y>0</y>
-           <width>286</width>
-           <height>124</height>
+           <width>280</width>
+           <height>73</height>
           </rect>
          </property>
          <layout class="QVBoxLayout" name="verticalLayout_6">
           <item>
            <layout class="QVBoxLayout" name="verticalLayout_5">
             <item>
-             <widget class="QLabel" name="symbols_quantity_label">
-              <property name="frameShape">
-               <enum>QFrame::NoFrame</enum>
-              </property>
-              <property name="text">
-               <string>TextLabel</string>
-              </property>
-              <property name="alignment">
-               <set>Qt::AlignCenter</set>
-              </property>
-              <property name="wordWrap">
-               <bool>true</bool>
-              </property>
-             </widget>
+             <layout class="QGridLayout" name="gridLayout"/>
             </item>
            </layout>
           </item>
@@ -139,7 +117,7 @@
      <x>0</x>
      <y>0</y>
      <width>320</width>
-     <height>18</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menumenu">
