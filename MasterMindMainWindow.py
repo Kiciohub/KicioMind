@@ -20,7 +20,11 @@ class MainWindow(QMainWindow):
 
     def player_input_send_button_handler(self):
         player_input = self.player_input.text()
-        result = self.actual_game.single_player_input(self, player_input)
+        result = self.actual_game.single_player_input(player_input)
+        new_variable = f"input: {player_input} result: {result}"
+        self.game_history_listwidget.addItem(new_variable)
+        self.player_input.setText("")
+
 
     def new_game_action_handler(self):
         self.dialog.show()
@@ -46,6 +50,12 @@ class NewGameDialog(QDialog):
         except ValueError:
             pass
 
+        elements = ""
+        for i in range(1, b+1):
+            elements += f"[{i}] "
+
+        print(elements)
+        self.main_window.symbols_quantity_label.setText(elements)
         self.main_window.actual_game = GameProcess.Game(a, b, c)
         self.hide()
 

@@ -34,4 +34,4 @@ class AcceptanceTests(unittest.TestCase):
         self.assertEqual(self.testgame.single_player_input(mock_player_input_incorrect()), (0, 0))
 
     def test_actual_game_win(self):
-        self.assertEqual(self.testgame.single_player_input(mock_player_input_correct()), (4,0))
+        self.assertEqual(self.testgame.single_player_input(mock_player_input_correct()), (4, 0))
