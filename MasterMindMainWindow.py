@@ -43,8 +43,7 @@ class MainWindow(QMainWindow):
         player_input = self.player_input.text()
         result = self.actual_game.single_player_input(player_input)
 
-        new_variable = f"input: {player_input} result: {result}"
-
+        new_variable = f"{player_input} {result}"
         self.game_history_listwidget.addItem(new_variable)
         self.player_input.setText("")
 
