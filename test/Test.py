@@ -1,5 +1,5 @@
 import unittest
-import GameProcess
+from src import GameProcess
 
 
 def mock_player_input_incorrect():

@@ -3,7 +3,7 @@ from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 from PyQt5.uic import loadUi
 import sys
-import GameProcess
+from src import GameProcess
 
 
 class MainWindow(QMainWindow):
