@@ -1,30 +1,41 @@
 import os
-
+import yaml
+import sys
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 from PyQt5.uic import loadUi
-import sys
+
 from src import GameProcess, ImageProcessing
 
+# TODO: Zrobić konfig w yamlu
 
 
 class MainWindow(QMainWindow):
     def __init__(self):
         super(MainWindow, self).__init__()
         loadUi(os.path.join(os.getcwd(), "../layouts/master_mind_main_gui.ui"), self)
-        self.dialog_input = None
 
+        # config load
+        with open("../config.yaml", 'r') as stream:
+            try:
+                self.buttons_horizontal_number = yaml.safe_load(stream)["buttons_horizontal_number"]
+            except:
+                print("Incorrect config file")
+
+        # variable init
+        self.dialog_input = None
         self.actual_game = None
+
+        # object init
         self.dialog = NewGameDialog(self)
 
+        # action handler connect
         self.new_game_action.triggered.connect(self.new_game_action_handler)
         self.quit_action.triggered.connect(self.quit_action_handler)
 
+        # button handler connect
         self.player_input_send_button.clicked.connect(self.player_input_send_button_handler)
-
-        # self.gridLayout = QGridLayout()
-        # self.scrollArea.setLayout(self.gridLayout)
 
     def buttonHandlerFactory(self, param):
         def handle():
@@ -36,10 +47,10 @@ class MainWindow(QMainWindow):
     def generateButtons(self, count):
         row = 0
         for i in range(count):
-            if i % 3 == 0:
+            if i % self.buttons_horizontal_number == 0:
                 row += 1
             button = QPushButton(str(i + 1))
-            self.gridLayout.addWidget(button, row, i % 3)
+            self.gridLayout.addWidget(button, row, i % self.buttons_horizontal_number)
             button.clicked.connect(self.buttonHandlerFactory(i + 1))
 
     def player_input_send_button_handler(self):
