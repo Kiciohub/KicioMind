@@ -8,8 +8,6 @@ from PyQt5.uic import loadUi
 
 from src import GameProcess, ImageProcessing
 
-# TODO: Zrobić konfig w yamlu
-
 
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -87,12 +85,21 @@ class NewGameDialog(QDialog):
             a = int(self.sequence_length_lineEdit.text())
             b = int(self.symbols_quantity_lineEdit.text())
             c = int(self.round_number_lineEdit.text())
+
+            if a > 0 and b > 0 and c > 0:
+                pass
+            else:
+                pass  # Print error
         except ValueError:
             pass
 
         self.main_window.generateButtons(b)
         self.main_window.actual_game = GameProcess.Game(a, b, c)
         self.hide()
+
+    def keyPressEvent(self, QKeyEvent):
+        if QKeyEvent.key() in [Qt.Key_Enter, Qt.Key_Return]:
+            self.start_game_handler()
 
 
 if __name__ == '__main__':
