@@ -89,7 +89,7 @@ class NewGameDialog(QDialog):
             b = int(self.symbols_quantity_lineEdit.text())
             c = int(self.round_number_lineEdit.text())
 
-            self.main_window.generate_buttons(b)
+            self.main_window.generateButtons(b)
             self.main_window.actual_game = GameProcess.Game(a, b, c)
             self.hide()
 
