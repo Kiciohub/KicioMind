@@ -8,7 +8,6 @@ import sys
 from src import GameProcess, ImageProcessing
 
 
-
 class MainWindow(QMainWindow):
     def __init__(self):
         super(MainWindow, self).__init__()
@@ -23,24 +22,22 @@ class MainWindow(QMainWindow):
 
         self.player_input_send_button.clicked.connect(self.player_input_send_button_handler)
 
-        # self.gridLayout = QGridLayout()
-        # self.scrollArea.setLayout(self.gridLayout)
-
-    def buttonHandlerFactory(self, param):
+    def button_handler_factory(self, param):
         def handle():
             input_text = self.player_input.text()
             input_text += f"{param},"
             self.player_input.setText(input_text)
+
         return handle
 
-    def generateButtons(self, count):
+    def generate_buttons(self, count):
         row = 0
         for i in range(count):
             if i % 3 == 0:
                 row += 1
             button = QPushButton(str(i + 1))
             self.gridLayout.addWidget(button, row, i % 5)
-            button.clicked.connect(self.buttonHandlerFactory(i + 1))
+            button.clicked.connect(self.button_handler_factory(i + 1))
 
     def player_input_send_button_handler(self):
         player_input = self.player_input.text()
@@ -49,15 +46,20 @@ class MainWindow(QMainWindow):
 
         result = self.actual_game.single_player_input(player_input)
 
-        ImageProcessing.merge_result_image(result, self.actual_game.round_number)
-
-        new_variable = f"{player_input} {result}"
-        self.game_history_listwidget.addItem(new_variable)
+        result_image = ImageProcessing.merge_result_image(result, self.actual_game.round_number)
+        new_variable = f"{player_input}"
+        item = QListWidgetItem(new_variable)
+        item.setData(Qt.DecorationRole, result_image)
+        self.game_history_listwidget.addItem(item)
         self.player_input.setText("")
+
+    def make_resp_item(self, item, src):
+        lbl = QLabel()
+        lbl.setPixmap(QPixmap(src))
+        item.addWidget(lbl)
 
     def new_game_action_handler(self):
         self.dialog.show()
-
 
     @staticmethod
     def quit_action_handler():
@@ -79,7 +81,7 @@ class NewGameDialog(QDialog):
         except ValueError:
             pass
 
-        self.main_window.generateButtons(b)
+        self.main_window.generate_buttons(b)
         self.main_window.actual_game = GameProcess.Game(a, b, c)
         self.hide()
 
