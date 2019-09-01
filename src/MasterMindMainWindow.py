@@ -5,7 +5,8 @@ from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 from PyQt5.uic import loadUi
 import sys
-from src import GameProcess
+from src import GameProcess, ImageProcessing
+
 
 
 class MainWindow(QMainWindow):
@@ -38,7 +39,7 @@ class MainWindow(QMainWindow):
             if i % 3 == 0:
                 row += 1
             button = QPushButton(str(i + 1))
-            self.gridLayout.addWidget(button, row, i % 3)
+            self.gridLayout.addWidget(button, row, i % 5)
             button.clicked.connect(self.buttonHandlerFactory(i + 1))
 
     def player_input_send_button_handler(self):
@@ -47,6 +48,8 @@ class MainWindow(QMainWindow):
             player_input = player_input[:-1]
 
         result = self.actual_game.single_player_input(player_input)
+
+        ImageProcessing.merge_result_image(result, self.actual_game.round_number)
 
         new_variable = f"{player_input} {result}"
         self.game_history_listwidget.addItem(new_variable)
