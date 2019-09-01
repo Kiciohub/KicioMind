@@ -3,11 +3,11 @@ import GameProcess
 
 
 def mock_player_input_incorrect():
-    return [50, 50, 50, 50]
+    return "50,50,50,50"
 
 
 def mock_player_input_correct():
-    return [10, 20, 30, 40]
+    return "10,20,30,40"
 
 
 class AcceptanceTests(unittest.TestCase):
@@ -31,7 +31,7 @@ class AcceptanceTests(unittest.TestCase):
         self.assertEqual(self.testgame.sequence_check([10, 10], [20, 20]), (0, 0))
 
     def test_actual_game_loose(self):
-        self.assertEqual(GameProcess.actual_game(self.testgame, mock_player_input_incorrect), (0, 0))
+        self.assertEqual(self.testgame.single_player_input(mock_player_input_incorrect()), (0, 0))
 
     def test_actual_game_win(self):
-        self.assertEqual(GameProcess.actual_game(self.testgame, mock_player_input_correct), "Won")
+        self.assertEqual(self.testgame.single_player_input(mock_player_input_correct()), (4,0))
