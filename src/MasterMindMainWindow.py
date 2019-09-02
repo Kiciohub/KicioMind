@@ -40,6 +40,7 @@ class MainWindow(QMainWindow):
             input_text = self.player_input.text()
             input_text += f"{param},"
             self.player_input.setText(input_text)
+
         return handle
 
     def generateButtons(self, count):
@@ -58,15 +59,20 @@ class MainWindow(QMainWindow):
 
         result = self.actual_game.single_player_input(player_input)
 
-        ImageProcessing.merge_result_image(result, self.actual_game.round_number)
-
-        new_variable = f"{player_input} {result}"
-        self.game_history_listwidget.addItem(new_variable)
+        result_image = ImageProcessing.merge_result_image(result, self.actual_game.round_number)
+        new_variable = f"{player_input}"
+        item = QListWidgetItem(new_variable)
+        item.setData(Qt.DecorationRole, result_image)
+        self.game_history_listwidget.addItem(item)
         self.player_input.setText("")
+
+    def make_resp_item(self, item, src):
+        lbl = QLabel()
+        lbl.setPixmap(QPixmap(src))
+        item.addWidget(lbl)
 
     def new_game_action_handler(self):
         self.dialog.show()
-
 
     @staticmethod
     def quit_action_handler():

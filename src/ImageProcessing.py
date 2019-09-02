@@ -1,38 +1,26 @@
-from PIL import Image
-import matplotlib.pyplot as plt
+from PyQt5.QtGui import QImage, QPainter, QPixmap, QColor
 
 
 def merge_result_image(result, length):
-
-    images = [Image.open('../img/Correct.png'), Image.open('../img/Close.png'), Image.open('../img/InCorrect.png')]
-    widths, heights = zip(*(i.size for i in images))
-
-    total_width = 20*length
-    max_height = max(heights)
-
-    new_im = Image.new('RGB', (total_width, max_height))
-
-    x_offset = 0
-
+    width = 20
+    total_width = width * length
     correct, close = result
-    incorrect = length-correct-close
+    incorrect = length - correct - close
+    painter = QPainter()
+    res_img = QImage(total_width, width, QImage.Format_RGBA64_Premultiplied)
+    res_img.fill(QColor(0, 0, 0, 0))
 
-    for i in range(correct):
-        new_im.paste(images[0], (x_offset, 0))
-        x_offset += images[0].size[0]
+    painter.begin(res_img)
+    x_offset = draw_image_n_times(QImage('../img/Correct.png'), painter, correct, width, 0)
+    x_offset = draw_image_n_times(QImage('../img/Close.png'), painter, close, width, x_offset)
+    x_offset = draw_image_n_times(QImage('../img/InCorrect.png'), painter, incorrect, width, x_offset)
+    painter.end()
 
-    for i in range(close):
-        new_im.paste(images[1], (x_offset, 0))
-        x_offset += images[1].size[0]
-
-    for i in range(incorrect):
-        new_im.paste(images[2], (x_offset, 0))
-        x_offset += images[2].size[0]
-
-    new_im.save('../img/test.png')
-    plt.imshow(Image.open('../img/test.png'))
-    plt.show()
+    return QPixmap.fromImage(res_img)
 
 
-if __name__ == '__main__':
-    merge_result_image((2, 1), 6)
+def draw_image_n_times(image, painter, times, width, x_offset):
+    for i in range(times):
+        painter.drawImage(x_offset, 0, image)
+        x_offset += width
+    return x_offset
