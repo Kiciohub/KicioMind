@@ -35,7 +35,7 @@ class MainWindow(QMainWindow):
         # button handler connect
         self.player_input_send_button.clicked.connect(self.player_input_send_button_handler)
 
-    def buttonHandlerFactory(self, param):
+    def button_handle_factory(self, param):
         def handle():
             input_text = self.player_input.text()
             input_text += f"{param},"
@@ -43,14 +43,14 @@ class MainWindow(QMainWindow):
 
         return handle
 
-    def generateButtons(self, count):
+    def generate_buttons(self, count):
         row = 0
         for i in range(count):
             if i % self.buttons_horizontal_number == 0:
                 row += 1
             button = QPushButton(str(i + 1))
             self.gridLayout.addWidget(button, row, i % self.buttons_horizontal_number)
-            button.clicked.connect(self.buttonHandlerFactory(i + 1))
+            button.clicked.connect(self.button_handle_factory(i + 1))
 
     def player_input_send_button_handler(self):
         player_input = self.player_input.text()
@@ -95,7 +95,7 @@ class NewGameDialog(QDialog):
             b = int(self.symbols_quantity_lineEdit.text())
             c = int(self.round_number_lineEdit.text())
 
-            self.main_window.generateButtons(b)
+            self.main_window.generate_buttons(b)
             self.main_window.actual_game = GameProcess.Game(a, b, c)
             self.hide()
 
