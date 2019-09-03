@@ -27,6 +27,9 @@ class AcceptanceTests(unittest.TestCase):
         self.assertEqual(self.testgame.sequence_check([10, 20], [20, 10]), (0, 2))
         self.assertEqual(self.testgame.sequence_check([10, 20, 20], [10, 10, 10]), (1, 0))
 
+    def test_sequence_check_match_and_in_sequence(self):
+        self.assertEqual(self.testgame.sequence_check([20, 40, 30, 10], [10, 40, 20, 10]), (2, 1))
+
     def test_sequence_check_not_match(self):
         self.assertEqual(self.testgame.sequence_check([10, 10], [20, 20]), (0, 0))
 
