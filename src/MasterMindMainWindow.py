@@ -1,6 +1,7 @@
 import os
 import yaml
 import sys
+
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
@@ -13,6 +14,8 @@ class MainWindow(QMainWindow):
     def __init__(self):
         super(MainWindow, self).__init__()
         loadUi(os.path.join(os.getcwd(), "../layouts/master_mind_main_gui.ui"), self)
+
+        self.game_history_listwidget.addItem(" Start a new game")
 
         # config load
         with open("../config.yaml", 'r') as stream:
@@ -66,17 +69,21 @@ class MainWindow(QMainWindow):
         self.game_history_listwidget.addItem(item)
         self.player_input.setText("")
 
-    def make_resp_item(self, item, src):
-        lbl = QLabel()
-        lbl.setPixmap(QPixmap(src))
-        item.addWidget(lbl)
-
     def new_game_action_handler(self):
         self.dialog.show()
 
     def keyPressEvent(self, e):
         if e.key() in [Qt.Key_Enter, Qt.Key_Return]:
             self.player_input_send_button_handler()
+        elif e.key() == Qt.Key_Escape:
+            self.close()
+            sys.exit()
+
+    @staticmethod
+    def make_resp_item(self, item, src):
+        lbl = QLabel()
+        lbl.setPixmap(QPixmap(src))
+        item.addWidget(lbl)
 
     @staticmethod
     def quit_action_handler():
