@@ -74,6 +74,10 @@ class MainWindow(QMainWindow):
     def new_game_action_handler(self):
         self.dialog.show()
 
+    def keyPressEvent(self, e):
+        if e.key() in [Qt.Key_Enter, Qt.Key_Return]:
+            self.player_input_send_button_handler()
+
     @staticmethod
     def quit_action_handler():
         sys.exit()
