@@ -62,7 +62,7 @@ class MainWindow(QMainWindow):
 
         result = self.actual_game.single_player_input(player_input)
 
-        result_image = ImageProcessing.merge_result_image(result, self.actual_game.round_number)
+        result_image = ImageProcessing.merge_result_image(result, self.actual_game.sequence_length)
         new_variable = f"{player_input}"
         item = QListWidgetItem(new_variable)
         item.setData(Qt.DecorationRole, result_image)

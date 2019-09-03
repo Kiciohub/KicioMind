@@ -23,21 +23,24 @@ class Game:
 
         for i in range(length):
             if player_input[i] == sequence_copy[i]:
-                sequence_copy[i] = "M"
+                sequence_copy[i] = "N"
 
         for j in range(length):
             value = player_input[j]
             if value in sequence_copy:
-                sequence_copy[sequence_copy.index(value)] = "I"
+                sequence_copy[sequence_copy.index(value)] = "O"
 
-        return sequence_copy.count("M"), sequence_copy.count("I")
-
+        return sequence_copy.count("N"), sequence_copy.count("O")
 
     def single_player_input(self, single_input):
         input = single_input.split(",")
         input = list(map(int, input))
         result = self.sequence_check(self.sequence, input)
         return result
+
+
+def dupa(kupa, kamienie):
+    return kupa * kamienie
 
 
 if __name__ == '__main__':
