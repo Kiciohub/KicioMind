@@ -59,12 +59,24 @@ class MainWindow(QMainWindow):
             button.clicked.connect(self.button_handle_factory(i + 1))
 
     def player_input_send_button_handler(self):
+        remaining_round = int(self.round_count_lineEdit.text())
+        remaining_round -= 1
+
+        if remaining_round == 0:
+            self.game_history_listwidget.addItem("Sorry, you loose. Try new game!")
+            self.player_input_send_button.setEnabled(False)
+            for i in range(self.gridLayout.count()):
+                self.gridLayout.itemAt(i).widget().close()
+        else:
+            self.round_count_lineEdit.setText(str(remaining_round))
+            self.player_input_processing()
+
+    def player_input_processing(self):
         player_input = self.player_input.text()
         if player_input[-1] == ",":
             player_input = player_input[:-1]
 
             result = self.actual_game.single_player_input(player_input)
-
             result_image = ImageProcessing.merge_result_image(result, self.actual_game.sequence_length)
             new_variable = f"{player_input}"
             item = QListWidgetItem(new_variable)
@@ -115,9 +127,7 @@ class NewGameDialog(QDialog):
         super(NewGameDialog, self).__init__()
         loadUi(r"../layouts/master_mind_new_game.ui", self)
         self.all_good_flag = False
-
         self.main_window = main_window
-
         self.start_game_button.clicked.connect(self.start_game_handler)
 
     def start_game_handler(self):
@@ -130,7 +140,6 @@ class NewGameDialog(QDialog):
             self.main_window.round_count_lineEdit.insert(str(c))
             self.main_window.actual_game = GameProcess.Game(a, b, c)
             self.hide()
-
 
     def paintEvent(self, e):
         field1, field2, field3 = self.sequence_length_lineEdit.text(), self.symbols_quantity_lineEdit.text(), self.round_number_lineEdit.text()
