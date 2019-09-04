@@ -63,19 +63,21 @@ class MainWindow(QMainWindow):
         remaining_round -= 1
         self.round_count_lineEdit.setText(str(remaining_round))
 
-        if remaining_round == 0:
-            self.game_history_listwidget.addItem("Sorry, you loose. Try new game!")
-            self.block_game_option()
-        else:
+        if remaining_round >= 0:
             result = self.player_input_processing()
             correct, close = result
             if correct == self.actual_game.sequence_length:
-                self.game_history_listwidget.addItem("Congratulations, you win!")
+                self.input_errors_label.setText("<font color=green>Congratulations, you win!</font>")
                 self.block_game_option()
+        elif remaining_round <= 0:
+            self.input_errors_label.setText("<font color=red>Sorry, you loose. Try new game!</font>")
+            self.block_game_option()
 
     def block_game_option(self):
         self.player_input_send_button.setEnabled(False)
+        self.player_input_clear_button.setEnabled(False)
         self.player_input.setText("")
+
         for i in range(self.gridLayout.count()):
             self.gridLayout.itemAt(i).widget().close()
 
@@ -112,19 +114,19 @@ class MainWindow(QMainWindow):
 
             input_count = player_input.count(",") + 1
             if player_input == "":
-                self.input_errors_label.setText("<font color=red> Please fill in sequence <font>")
+                self.input_errors_label.setText("<font color=red> Please fill in sequence </font>")
                 self.player_input_send_button.setEnabled(False)
 
             elif input_count > self.actual_game.sequence_length:
-                self.input_errors_label.setText("<font color=red> Sequence too long <font>")
+                self.input_errors_label.setText("<font color=red> Sequence too long </font>")
                 self.player_input_send_button.setEnabled(False)
 
             elif input_count < self.actual_game.sequence_length:
-                self.input_errors_label.setText("<font color=red> Sequence too short <font>")
+                self.input_errors_label.setText("<font color=red> Sequence too short </font>")
                 self.player_input_send_button.setEnabled(False)
 
             elif input_count == self.actual_game.sequence_length:
-                self.input_errors_label.setText("<font color=green> Sequence length correct <font>")
+                self.input_errors_label.setText("<font color=green> Sequence length correct </font>")
                 self.player_input_send_button.setEnabled(True)
         except:
             pass
@@ -155,7 +157,7 @@ class NewGameDialog(QDialog):
 
     def paintEvent(self, e):
         field1, field2, field3 = self.sequence_length_lineEdit.text(), self.symbols_quantity_lineEdit.text(), self.round_number_lineEdit.text()
-        self.label_4.setText("<font color=green> ALL GOOD <font>")
+        self.label_4.setText("<font color=green> ALL GOOD </font>")
 
         try:
             field1 = int(field1)
@@ -165,10 +167,10 @@ class NewGameDialog(QDialog):
             if field1 > 0 and field2 > 0 and field3 > 0:
                 self.all_good_flag = True
             else:
-                self.label_4.setText("<font color=red> All fields must be greater that zero <font>")
+                self.label_4.setText("<font color=red> All fields must be greater that zero </font>")
 
         except:
-            self.label_4.setText("<font color=red> All fields must be ints <font>")
+            self.label_4.setText("<font color=red> All fields must be ints </font>")
 
     def keyPressEvent(self, e):
         if e.key() in [Qt.Key_Enter, Qt.Key_Return]:
