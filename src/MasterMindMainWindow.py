@@ -1,7 +1,6 @@
 import os
 import yaml
 import sys
-
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
@@ -15,8 +14,6 @@ class MainWindow(QMainWindow):
         super(MainWindow, self).__init__()
         loadUi(os.path.join(os.getcwd(), "../layouts/master_mind_main_gui.ui"), self)
 
-        self.game_history_listwidget.addItem(" Start a new game")
-
         # config load
         with open("../config.yaml", 'r') as stream:
             try:
@@ -27,6 +24,7 @@ class MainWindow(QMainWindow):
         # variable init
         self.dialog_input = None
         self.actual_game = None
+        self.remaining_rounds = None
 
         # object init
         self.dialog = NewGameDialog(self)
@@ -37,6 +35,11 @@ class MainWindow(QMainWindow):
 
         # button handler connect
         self.player_input_send_button.clicked.connect(self.player_input_send_button_handler)
+        self.player_input_clear_button.clicked.connect(self.player_input_clear_button_handler)
+
+    def player_input_clear_button_handler(self):
+        self.player_input.clear()
+        self.input_errors_label.clear()
 
     def button_handle_factory(self, param):
         def handle():
@@ -60,30 +63,47 @@ class MainWindow(QMainWindow):
         if player_input[-1] == ",":
             player_input = player_input[:-1]
 
-        result = self.actual_game.single_player_input(player_input)
+            result = self.actual_game.single_player_input(player_input)
 
-        result_image = ImageProcessing.merge_result_image(result, self.actual_game.sequence_length)
-        new_variable = f"{player_input}"
-        item = QListWidgetItem(new_variable)
-        item.setData(Qt.DecorationRole, result_image)
-        self.game_history_listwidget.addItem(item)
-        self.player_input.setText("")
+            result_image = ImageProcessing.merge_result_image(result, self.actual_game.sequence_length)
+            new_variable = f"{player_input}"
+            item = QListWidgetItem(new_variable)
+            item.setData(Qt.DecorationRole, result_image)
+            self.game_history_listwidget.addItem(item)
+            self.player_input.setText("")
 
-    def new_game_action_handler(self):
-        self.dialog.show()
-
-    def keyPressEvent(self, e):
-        if e.key() in [Qt.Key_Enter, Qt.Key_Return]:
-            self.player_input_send_button_handler()
-        elif e.key() == Qt.Key_Escape:
-            self.close()
-            sys.exit()
-
-    @staticmethod
     def make_resp_item(self, item, src):
         lbl = QLabel()
         lbl.setPixmap(QPixmap(src))
         item.addWidget(lbl)
+
+    def new_game_action_handler(self):
+        self.dialog.show()
+        self.game_history_listwidget.clear()
+        self.round_count_lineEdit.clear()
+
+    def paintEvent(self, e):
+
+        try:
+            player_input = self.player_input.text()
+            if player_input[-1] == ",":
+                player_input = player_input[:-1]
+
+            input_count = player_input.count(",") + 1
+            if player_input == "":
+                self.input_errors_label.setText("<font color=red> Please fill in sequence <font>")
+                self.player_input_send_button.setEnabled(False)
+            elif input_count > self.actual_game.sequence_length:
+                self.input_errors_label.setText("<font color=red> Sequence too long <font>")
+                self.player_input_send_button.setEnabled(False)
+            elif input_count < self.actual_game.sequence_length:
+                self.input_errors_label.setText("<font color=red> Sequence too short <font>")
+                self.player_input_send_button.setEnabled(False)
+            elif input_count == self.actual_game.sequence_length:
+                self.input_errors_label.setText("<font color=green> Sequence length correct <font>")
+                self.player_input_send_button.setEnabled(True)
+        except:
+            pass
 
     @staticmethod
     def quit_action_handler():
@@ -107,8 +127,10 @@ class NewGameDialog(QDialog):
             c = int(self.round_number_lineEdit.text())
 
             self.main_window.generate_buttons(b)
+            self.main_window.round_count_lineEdit.insert(str(c))
             self.main_window.actual_game = GameProcess.Game(a, b, c)
             self.hide()
+
 
     def paintEvent(self, e):
         field1, field2, field3 = self.sequence_length_lineEdit.text(), self.symbols_quantity_lineEdit.text(), self.round_number_lineEdit.text()

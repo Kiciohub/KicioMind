@@ -17,9 +17,57 @@
    <layout class="QVBoxLayout" name="verticalLayout_2">
     <item>
      <layout class="QVBoxLayout" name="verticalLayout">
-      <property name="margin">
+      <property name="leftMargin">
        <number>10</number>
       </property>
+      <property name="topMargin">
+       <number>10</number>
+      </property>
+      <property name="rightMargin">
+       <number>10</number>
+      </property>
+      <property name="bottomMargin">
+       <number>10</number>
+      </property>
+      <item>
+       <layout class="QGridLayout" name="gridLayout_3">
+        <item row="2" column="0">
+         <widget class="QLineEdit" name="round_count_lineEdit">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="label_2">
+          <property name="text">
+           <string>Remaining rounds</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="QLabel" name="label_3">
+          <property name="text">
+           <string>Time</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1">
+         <widget class="QLineEdit" name="time_count_lineEdit">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <widget class="Line" name="line_3">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+       </widget>
+      </item>
       <item>
        <widget class="QScrollArea" name="scrollArea_2">
         <property name="widgetResizable">
@@ -30,8 +78,8 @@
           <rect>
            <x>0</x>
            <y>0</y>
-           <width>280</width>
-           <height>143</height>
+           <width>286</width>
+           <height>129</height>
           </rect>
          </property>
          <layout class="QVBoxLayout" name="verticalLayout_4">
@@ -61,12 +109,33 @@
        </widget>
       </item>
       <item>
+       <widget class="QLabel" name="input_errors_label">
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+      </item>
+      <item>
        <layout class="QHBoxLayout" name="horizontalLayout">
         <item>
-         <widget class="QLineEdit" name="player_input"/>
+         <widget class="QLineEdit" name="player_input">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="player_input_clear_button">
+          <property name="text">
+           <string>Clear</string>
+          </property>
+         </widget>
         </item>
         <item>
          <widget class="QPushButton" name="player_input_send_button">
+          <property name="enabled">
+           <bool>true</bool>
+          </property>
           <property name="text">
            <string>Check</string>
           </property>
@@ -91,8 +160,8 @@
           <rect>
            <x>0</x>
            <y>0</y>
-           <width>280</width>
-           <height>73</height>
+           <width>286</width>
+           <height>49</height>
           </rect>
          </property>
          <layout class="QVBoxLayout" name="verticalLayout_6">
@@ -117,7 +186,7 @@
      <x>0</x>
      <y>0</y>
      <width>320</width>
-     <height>22</height>
+     <height>17</height>
     </rect>
    </property>
    <widget class="QMenu" name="menumenu">
