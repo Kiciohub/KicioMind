@@ -114,12 +114,15 @@ class MainWindow(QMainWindow):
             if player_input == "":
                 self.input_errors_label.setText("<font color=red> Please fill in sequence <font>")
                 self.player_input_send_button.setEnabled(False)
+
             elif input_count > self.actual_game.sequence_length:
                 self.input_errors_label.setText("<font color=red> Sequence too long <font>")
                 self.player_input_send_button.setEnabled(False)
+
             elif input_count < self.actual_game.sequence_length:
                 self.input_errors_label.setText("<font color=red> Sequence too short <font>")
                 self.player_input_send_button.setEnabled(False)
+
             elif input_count == self.actual_game.sequence_length:
                 self.input_errors_label.setText("<font color=green> Sequence length correct <font>")
                 self.player_input_send_button.setEnabled(True)
