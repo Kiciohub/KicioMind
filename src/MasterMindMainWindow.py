@@ -61,28 +61,37 @@ class MainWindow(QMainWindow):
     def player_input_send_button_handler(self):
         remaining_round = int(self.round_count_lineEdit.text())
         remaining_round -= 1
+        self.round_count_lineEdit.setText(str(remaining_round))
 
         if remaining_round == 0:
             self.game_history_listwidget.addItem("Sorry, you loose. Try new game!")
-            self.player_input_send_button.setEnabled(False)
-            for i in range(self.gridLayout.count()):
-                self.gridLayout.itemAt(i).widget().close()
+            self.block_game_option()
         else:
-            self.round_count_lineEdit.setText(str(remaining_round))
-            self.player_input_processing()
+            result = self.player_input_processing()
+            correct, close = result
+            if correct == self.actual_game.sequence_length:
+                self.game_history_listwidget.addItem("Congratulations, you win!")
+                self.block_game_option()
+
+    def block_game_option(self):
+        self.player_input_send_button.setEnabled(False)
+        self.player_input.setText("")
+        for i in range(self.gridLayout.count()):
+            self.gridLayout.itemAt(i).widget().close()
 
     def player_input_processing(self):
         player_input = self.player_input.text()
         if player_input[-1] == ",":
             player_input = player_input[:-1]
 
-            result = self.actual_game.single_player_input(player_input)
-            result_image = ImageProcessing.merge_result_image(result, self.actual_game.sequence_length)
-            new_variable = f"{player_input}"
-            item = QListWidgetItem(new_variable)
-            item.setData(Qt.DecorationRole, result_image)
-            self.game_history_listwidget.addItem(item)
-            self.player_input.setText("")
+        result = self.actual_game.single_player_input(player_input)
+        result_image = ImageProcessing.merge_result_image(result, self.actual_game.sequence_length)
+        new_variable = f"{player_input}"
+        item = QListWidgetItem(new_variable)
+        item.setData(Qt.DecorationRole, result_image)
+        self.game_history_listwidget.addItem(item)
+        self.player_input.setText("")
+        return result
 
     def make_resp_item(self, item, src):
         lbl = QLabel()
