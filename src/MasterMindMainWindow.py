@@ -56,7 +56,6 @@ class MainWindow(QMainWindow):
         self.close_icon_label.setPixmap(QPixmap('../img/' + self.style + '/Close.png'))
         self.incorrect_icon_label.setPixmap(QPixmap('../img/' + self.style + '/Incorrect.png'))
 
-
     def player_input_clear_button_handler(self):
         self.player_input.clear()
         self.input_errors_label.clear()
