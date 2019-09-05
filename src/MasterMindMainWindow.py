@@ -25,6 +25,11 @@ class MainWindow(QMainWindow):
         self.dialog_input = None
         self.actual_game = None
         self.remaining_rounds = None
+        self.style = None
+
+        # window prepare
+        self.style_action_handler("Standard")
+        self.player_input_send_button.setEnabled(False)
 
         # object init
         self.dialog = NewGameDialog(self)
@@ -32,10 +37,25 @@ class MainWindow(QMainWindow):
         # action handler connect
         self.new_game_action.triggered.connect(self.new_game_action_handler)
         self.quit_action.triggered.connect(self.quit_action_handler)
+        # self.style_standard_action.triggered.connect(self.style_standard_action_handler)
+        self.style_standard_action.triggered.connect(self.style_factory("Standard"))
+        self.style_unicorn_action.triggered.connect(self.style_factory("Unicorn"))
 
         # button handler connect
         self.player_input_send_button.clicked.connect(self.player_input_send_button_handler)
         self.player_input_clear_button.clicked.connect(self.player_input_clear_button_handler)
+
+    def style_factory(self, style):
+        def handler():
+            self.style_action_handler(style)
+        return handler
+
+    def style_action_handler(self, style):
+        self.style = style
+        self.correct_icon_label.setPixmap(QPixmap('../img/' + self.style + '/Correct.png'))
+        self.close_icon_label.setPixmap(QPixmap('../img/' + self.style + '/Close.png'))
+        self.incorrect_icon_label.setPixmap(QPixmap('../img/' + self.style + '/Incorrect.png'))
+
 
     def player_input_clear_button_handler(self):
         self.player_input.clear()
@@ -59,17 +79,19 @@ class MainWindow(QMainWindow):
             button.clicked.connect(self.button_handle_factory(i + 1))
 
     def player_input_send_button_handler(self):
+        self.player_input_send_button.setEnabled(False)
         remaining_round = int(self.round_count_lineEdit.text())
         remaining_round -= 1
         self.round_count_lineEdit.setText(str(remaining_round))
 
-        if remaining_round >= 0:
-            result = self.player_input_processing()
-            correct, close = result
-            if correct == self.actual_game.sequence_length:
-                self.input_errors_label.setText("<font color=green>Congratulations, you win!</font>")
-                self.block_game_option()
-        elif remaining_round <= 0:
+        result = self.player_input_processing()
+        correct, close = result
+        if correct == self.actual_game.sequence_length:
+            self.input_errors_label.setText("<font color=green>Congratulations, you win!</font>")
+            self.block_game_option()
+            return
+
+        if remaining_round == 0:
             self.input_errors_label.setText("<font color=red>Sorry, you loose. Try new game!</font>")
             self.block_game_option()
 
@@ -87,7 +109,7 @@ class MainWindow(QMainWindow):
             player_input = player_input[:-1]
 
         result = self.actual_game.single_player_input(player_input)
-        result_image = ImageProcessing.merge_result_image(result, self.actual_game.sequence_length)
+        result_image = ImageProcessing.merge_result_image(result, self.actual_game.sequence_length, self.style)
         new_variable = f"{player_input}"
         item = QListWidgetItem(new_variable)
         item.setData(Qt.DecorationRole, result_image)
@@ -152,6 +174,8 @@ class NewGameDialog(QDialog):
 
             self.main_window.generate_buttons(b)
             self.main_window.round_count_lineEdit.insert(str(c))
+            self.main_window.player_input_clear_button.setEnabled(True)
+            self.main_window.input_errors_label.setText("")
             self.main_window.actual_game = GameProcess.Game(a, b, c)
             self.hide()
 

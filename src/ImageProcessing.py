@@ -1,7 +1,7 @@
 from PyQt5.QtGui import QImage, QPainter, QPixmap, QColor
 
 
-def merge_result_image(result, length):
+def merge_result_image(result, length, style):
     width = 20
     total_width = width * length
     correct, close = result
@@ -11,9 +11,9 @@ def merge_result_image(result, length):
     res_img.fill(QColor(0, 0, 0, 0))
 
     painter.begin(res_img)
-    x_offset = draw_image_n_times(QImage('../img/Correct.png'), painter, correct, width, 0)
-    x_offset = draw_image_n_times(QImage('../img/Close.png'), painter, close, width, x_offset)
-    x_offset = draw_image_n_times(QImage('../img/InCorrect.png'), painter, incorrect, width, x_offset)
+    x_offset = draw_image_n_times(QImage('../img/' + style + '/Correct.png'), painter, correct, width, 0)
+    x_offset = draw_image_n_times(QImage('../img/' + style + '/Close.png'), painter, close, width, x_offset)
+    x_offset = draw_image_n_times(QImage('../img/' + style + '/InCorrect.png'), painter, incorrect, width, x_offset)
     painter.end()
 
     return QPixmap.fromImage(res_img)
