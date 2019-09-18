@@ -42,3 +42,4 @@ class AcceptanceTests(unittest.TestCase):
     def test_dupa(self):
         self.assertEqual(GameProcess.dupa(1, 2), 2)
         self.assertEqual(GameProcess.dupa(1, 3), 3)
+

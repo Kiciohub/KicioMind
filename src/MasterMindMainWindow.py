@@ -200,6 +200,10 @@ class NewGameDialog(QDialog):
             self.start_game_handler()
 
 
+def test():
+    pass
+
+
 if __name__ == '__main__':
     app = QApplication(sys.argv)
     app.processEvents()
